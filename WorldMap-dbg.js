@@ -1,4 +1,4 @@
-﻿//Copyright 2017. INFOCG Inc. all rights reserved. 
+﻿//Copyright 2017. INFOCG Inc. all rights reserved. zz
 
 sap.ui.define("u4a.charts.am.WorldMap", [
 "sap/ui/core/Control"
