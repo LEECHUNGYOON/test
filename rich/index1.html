@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+
+<title>UI5 Document</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<script id="sap-ui-bootstrap" src="/ui5/v1802/resources/sap-ui-core.js"
+data-sap-ui-language="EN"
+data-sap-ui-noDuplicateIds="false"
+data-sap-ui-preload="sync"
+data-sap-ui-compatVersion="edge"
+data-sap-ui-theme="sap_fiori_3"
+data-sap-ui-libs="sap.m"
+data-sap-ui-noDuplicateIds="true">
+</script>
+
+<style>
+
+html, body {
+  height: 100%;
+}
+body {
+margin: 0px;
+}
+
+</style>
+
+</head>
+<body>
+<div id="content"></div>
+
+<script>
+
+var u4a = {};
+    u4a.m = {};
+
+//Copyright 2017. INFOCG Inc. all rights reserved.
+
+sap.ui.define("u4a.m.UsageArea", [
+"sap/ui/core/Control",
+
+], function(Control){
+    "use strict";
+
+    var oUsageArea = Control.extend("u4a.m.UsageArea", {
+        metadata : {
+            library : "u4a.m",
+            properties : {
+		  		width : { type : "sap.ui.core.CSSSize", defaultValue : "100%" },
+		  		height : { type : "sap.ui.core.CSSSize", defaultValue : "100%" }
+			},
+
+            defaultAggregation : "contents",
+
+            aggregations : {
+              "contents" : { type : "sap.ui.core.Control", multiple : true, singularName: "content" },
+            }
+
+        }, // end of metadata
+
+        renderer : function(oRm, oControl){
+
+        	var aCont = oControl.getContents(),
+        		iCnt = aCont.length;        		
+
+            oRm.write("<div");
+            oRm.writeControlData(oControl);
+            oRm.addClass("u4aMUsageArea");
+            oRm.addStyle("width", oControl.getWidth());
+            oRm.addStyle("height", oControl.getHeight());
+            oRm.writeStyles();
+            oRm.writeClasses();
+            oRm.write(">");
+
+            for(var i = 0; i < iCnt; i++){
+            	var oContent = aCont[i];
+            	oRm.renderControl(oContent);
+            }           
+
+            oRm.write("</div>");
+
+        }, // end of renderer
+
+    });
+
+    return oUsageArea;
+
+});
+
+jQuery.u4aJSloadAsync = function(url, callback) {
+    jQuery.ajax({
+      'url': url,
+      'dataType': 'script',
+      'cache': false,
+      'async': false,
+      'success': callback || jQuery.noop
+    });
+}
+
+var oUsage,
+	oApp = new sap.m.App(),
+    oPage = new sap.m.Page();
+
+    oApp.addPage(oPage);
+    oApp.placeAt("content");
+
+var oBtn1 = new sap.m.Button({ 
+		text: "붙이기",
+		press: fn_attach
+	}),
+	oBtn2 = new sap.m.Button({
+		text: "제거",
+		press: fn_del
+	});
+
+var oBtn3 = new sap.m.Button({
+		text: "타임아웃 테스트",
+		press : fn_time
+	}),
+	oInput = new sap.m.Input({
+		width: "100px"
+	});
+
+	
+	oPage.addContent(oBtn1);
+	oPage.addContent(oBtn2);	
+	oPage.addContent(oBtn3);	
+	oPage.addContent(oInput);	
+	
+	var oRR;
+	setTimeout(function(){
+	
+		jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+		
+		oRR = new sap.ui.richtexteditor.RichTextEditor({
+			width: "100%",
+			customToolbar: true,
+			showGroupFont: true,
+			showGroupInsert: true,
+			showGroupLink: true,
+			showGroupUndo: true,
+			useLegacyTheme: false,
+			ready: function () {
+				this.addButtonGroup("styleselect").addButtonGroup("table");
+			}
+		});
+		
+		oPage.addContent(oRR);
+	
+	},0);
+
+function fn_attach(){
+	
+	// usage 클리어
+	fn_del();
+	
+	setTimeout(function(){
+	
+		jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+		
+		var oRich = new sap.ui.richtexteditor.RichTextEditor({		
+			width: "100%",
+			customToolbar: true,
+			showGroupFont: true,
+			showGroupInsert: true,
+			showGroupLink: true,
+			showGroupUndo: true,
+			useLegacyTheme: false,
+			ready: function () {
+				this.addButtonGroup("styleselect").addButtonGroup("table");
+			}		
+		});
+			
+		oUsage = new u4a.m.UsageArea({
+			contents : [
+				new sap.m.Page({
+					content : [
+						oRich
+					]				
+				})
+			]
+		});
+
+		oPage.addContent(oUsage);
+	
+	}, 0);
+	
+} // end of fn_attach
+
+function fn_del(){
+
+	setTimeout(function(){
+
+		if(oUsage){
+		
+			oUsage.destroyContents();
+			oUsage.destroy();
+			
+			oPage.removeContent(oUsage);
+			oUsage = null;
+		}
+		
+	},0);
+
+}
+
+var a = [],
+    b = [],
+    c = [],
+    d = [],
+    e = [],
+    f = [],
+    g = [];
+	
+function fn_time(){
+	
+	var v;
+	
+	oInput.setValue("");
+	
+	setTimeout(function(){		
+		
+		
+		for(var i = 0; i < 1000000; i++){			
+			a.push(new sap.m.Button());					
+		}
+		
+		for(var i = 0; i < 1000000; i++){			
+			b.push(new sap.m.Button());					
+		}
+		/*
+		for(var i = 0; i < 1000000; i++){			
+			c.push(new sap.m.Button());					
+		}
+		
+		for(var i = 0; i < 1000000; i++){			
+			d.push(new sap.m.Button());					
+		}
+		
+		for(var i = 0; i < 1000000; i++){			
+			e.push(new sap.m.Button());					
+		}
+		
+		for(var i = 0; i < 1000000; i++){			
+			f.push(new sap.m.Button());					
+		}
+		
+		for(var i = 0; i < 1000000; i++){			
+			g.push(new sap.m.Button());					
+		}
+		*/
+		if(v){
+			return;
+		}
+				
+		v = "1";
+		
+		//sap.m.MessageToast.show();
+		
+	},0);
+	
+	setTimeout(function(){
+
+		if(v){
+			return;
+		}
+		
+		v = "2";
+	
+	},0);
+	
+	setTimeout(function(){
+		
+		if(v){
+			return;
+		}
+		
+		v = "3";
+		
+	},0);
+	
+	setTimeout(function(){
+		
+		if(v){
+			return;
+		}
+		
+		v = "4";
+		
+	},0);
+	
+	setTimeout(function(){
+		
+		oInput.setValue(v);
+	
+	},1000);
+	
+}
+
+
+</script>
+
+</body>
+</html>
