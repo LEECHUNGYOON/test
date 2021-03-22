@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+
+<title>UI5 Document</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+
+<!-- <script id="sap-ui-bootstrap" src="/ui5/v1772/resources/sap-ui-core.js" -->
+<!-- <script id="sap-ui-bootstrap" src="/ui5/v1870/resources/sap-ui-core.js" -->
+<script id="sap-ui-bootstrap" src="/openui5/v1772/resources/sap-ui-core.js"
+data-sap-ui-language="EN"
+data-sap-ui-noDuplicateIds="false"
+data-sap-ui-preload="sync"
+data-sap-ui-compatVersion="edge"
+data-sap-ui-theme="sap_fiori_3"
+data-sap-ui-libs="sap.m"
+data-sap-ui-noDuplicateIds="true">
+</script>
+
+<style>
+
+html, body {
+  height: 100%;
+}
+body {
+margin: 0px;
+}
+
+</style>
+
+</head>
+<body>
+<div id="content"></div>
+
+<script>
+
+var u4a = {};
+    u4a.m = {};
+
+//Copyright 2017. INFOCG Inc. all rights reserved.
+
+sap.ui.define("u4a.m.UsageArea", [
+"sap/ui/core/Control",
+
+], function(Control){
+    "use strict";
+
+    var oUsageArea = Control.extend("u4a.m.UsageArea", {
+        metadata : {
+            library : "u4a.m",
+            properties : {
+          width : { type : "sap.ui.core.CSSSize", defaultValue : "100%" },
+          height : { type : "sap.ui.core.CSSSize", defaultValue : "100%" }
+      },
+
+            defaultAggregation : "contents",
+
+            aggregations : {
+              "contents" : { type : "sap.ui.core.Control", multiple : true, singularName: "content" },
+            }
+
+        }, // end of metadata
+
+        renderer : function(oRm, oControl){
+
+          var aCont = oControl.getContents(),
+            iCnt = aCont.length;
+
+            oRm.write("<div");
+            oRm.writeControlData(oControl);
+            oRm.addClass("u4aMUsageArea");
+            oRm.addStyle("width", oControl.getWidth());
+            oRm.addStyle("height", oControl.getHeight());
+            oRm.writeStyles();
+            oRm.writeClasses();
+            oRm.write(">");
+
+            for(var i = 0; i < iCnt; i++){
+              var oContent = aCont[i];
+              oRm.renderControl(oContent);
+            }
+
+            oRm.write("</div>");
+
+        }, // end of renderer
+
+    });
+
+    return oUsageArea;
+
+});
+
+
+sap.ui.define("u4a.m.RichEditorTinyMCE", [
+"sap/ui/richtexteditor/RichTextEditor",
+"sap/ui/richtexteditor/RichTextEditorRenderer",
+"sap/ui/core/Control",
+
+], function(RichTextEditor, RichTextEditorRenderer, Control){
+  "use strict";
+
+  var oEditor = RichTextEditor.extend("u4a.m.RichEditorTinyMCE", {
+    metadata : {
+      library : "u4a.m",
+    },
+
+    init : function(){
+
+      this._isFalse = "";
+
+      debugger;
+	  
+      var sIframeId = this._iframeId,
+      oIframe = document.getElementById(sIframeId);
+
+      if(oIframe){        
+          return;
+      }
+      
+      RichTextEditor.prototype.init.apply(this, arguments);
+
+    },
+
+    onBeforeRendering : function(){
+
+      debugger;
+
+      var sIframeId = this._iframeId,
+      oIframe = document.getElementById(sIframeId);
+
+      if(oIframe){        
+          return;
+      }
+       
+      //this.getAggregation("_toolbarWrapper");
+
+      RichTextEditor.prototype.onBeforeRendering.apply(this, arguments);
+
+    },
+
+    renderer : function(oRm, oControl){
+      var sIframeId = this._iframeId,
+      oIframe = document.getElementById(sIframeId);
+
+      if(oIframe){        
+          return;
+      }
+      
+      <!-- var sIframeId = oControl._iframeId, -->
+      <!-- oIframe = document.getElementById(sIframeId); -->
+
+      <!-- if(oIframe){ -->
+        <!-- debugger; -->
+        <!-- $('#' + oControl.getId()).remove(); -->
+      <!-- } -->
+
+      RichTextEditorRenderer.render(oRm, oControl);
+    },
+
+    onAfterRendering : function(){
+      
+      var sIframeId = this._iframeId,
+          oIframe = document.getElementById(sIframeId);
+
+      if(oIframe){        
+          return;
+      }
+      
+      var that = this;
+
+      RichTextEditor.prototype.onAfterRendering.apply(that, arguments);
+
+
+      <!-- var sIframeId = this._iframeId,  -->
+      <!-- oIframe = document.getElementById(sIframeId); -->
+
+
+      <!-- if(this._isFalse == ""){ -->
+        <!-- RichTextEditor.prototype.onAfterRendering.apply(this, arguments); -->
+        <!-- this._isFalse = 'X'; -->
+        <!-- return; -->
+      <!-- } -->
+      <!-- else { -->
+        <!-- if(!oIframe){ -->
+          <!-- debugger; -->
+          <!-- RichTextEditor.prototype.onAfterRendering.apply(this, arguments); -->
+          <!-- //this.onAfterRendering(); -->
+          <!-- //return;         -->
+          <!-- //$('#' + this.getId()).remove(); -->
+        <!-- } -->
+      <!-- } -->
+
+
+
+    },
+
+    <!-- onAfterRenderingTinyMCE4 : function(){ -->
+
+      <!-- debugger; -->
+
+      <!-- RichTextEditor.prototype.onAfterRenderingTinyMCE4.apply(this, arguments); -->
+
+    <!-- }, -->
+
+    <!-- _initializeTinyMCE4  : function(){ -->
+
+      <!-- debugger; -->
+
+      <!-- RichTextEditor.prototype._initializeTinyMCE4.apply(this, arguments); -->
+
+      <!-- debugger; -->
+
+    <!-- }, -->
+
+    <!-- onAfterRenderingTinyMCE : function(){ -->
+      <!-- debugger; -->
+
+      <!-- RichTextEditor.prototype.onAfterRenderingTinyMCE.apply(this, arguments); -->
+
+      <!-- var sIframeId = this._iframeId, -->
+        <!-- oIframe = document.getElementById(sIframeId); -->
+
+    <!-- }, -->
+
+    _onAfterReadyTinyMCE : function(){
+      //debugger;
+
+      RichTextEditor.prototype._onAfterReadyTinyMCE.apply(this, arguments);
+
+
+      return;
+
+
+
+
+      var sIframeId = this._iframeId,
+        oIframe = document.getElementById(sIframeId);
+
+      var $aEditors = $(".sapUiRTE"),
+        $iEditorLenth = $aEditors.length;
+
+      if(!$iEditorLenth){
+        return;
+      }
+
+      for(var i = 0; i < $iEditorLenth; i++){
+
+        var oEditor = $aEditors[i],
+          sEditorDomId = oEditor.id,
+          oRichEditor = sap.ui.getCore().byId(sEditorDomId);
+
+        if(!oRichEditor){
+          continue;
+        }
+
+        var sRichIframeId = oRichEditor._iframeId,
+          oIframe = document.getElementById(sRichIframeId);
+
+        if(oIframe){
+          continue;
+        }
+
+        debugger;
+
+        oRichEditor._oEditor.remove();
+
+        oRichEditor._initializeTinyMCE();
+
+        <!-- oRichEditor.reinitialize(); -->
+
+        //oRichEditor._initializeTinyMCE();
+
+        <!-- oRichEditor._bInitializationPending = false; -->
+        <!-- oRichEditor._tinyMCEStatus = "Ready"; -->
+        <!-- oRichEditor.reinitializeTinyMCE();  -->
+
+      }
+
+
+
+
+      <!-- if(!oIframe){ -->
+        <!-- debugger; -->
+        <!-- this.onAfterRenderingTinyMCE(); -->
+        <!-- return; -->
+      <!-- }       -->
+
+    },
+
+    reinitializeTinyMCE : function(){
+
+      //this._bInitializationPending = false;
+
+      //debugger;
+
+      RichTextEditor.prototype.reinitializeTinyMCE.apply(this, arguments);
+
+
+    }
+
+  });
+
+  return oEditor;
+
+});
+
+
+
+jQuery.u4aJSloadAsync = function(url, callback) {
+    jQuery.ajax({
+      'url': url,
+      'dataType': 'script',
+      'cache': false,
+      'async': false,
+      'success': callback || jQuery.noop
+    });
+}
+
+var oUsage,
+  oApp = new sap.m.App(),
+    oPage = new sap.m.Page();
+
+    oApp.addPage(oPage);
+    oApp.placeAt("content");
+
+var oBtn1 = new sap.m.Button({
+    text: "붙이기",
+    press: fn_attach
+  }),
+  oBtn2 = new sap.m.Button({
+    text: "제거",
+    press: fn_del
+  });
+
+  oPage.addContent(oBtn1);
+  oPage.addContent(oBtn2);
+
+  jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+
+  <!-- var oRR = new sap.ui.richtexteditor.RichTextEditor({ -->
+  var oRR = new u4a.m.RichEditorTinyMCE({    
+      width: "100%",
+      customToolbar: true,
+      showGroupFont: true,
+      showGroupInsert: true,
+      showGroupLink: true,
+      showGroupUndo: true,
+      useLegacyTheme: false,
+      ready: function () {
+        this.addButtonGroup("styleselect").addButtonGroup("table");
+      }
+    });
+
+  <!-- var oRR = new sap.ui.richtexteditor.RichTextEditor({ -->
+    <!-- width: "100%", -->
+    <!-- customToolbar: true, -->
+    <!-- showGroupFont: true, -->
+    <!-- showGroupInsert: true, -->
+    <!-- showGroupLink: true, -->
+    <!-- showGroupUndo: true, -->
+    <!-- useLegacyTheme: false, -->
+    <!-- ready: function () { -->
+      <!-- this.addButtonGroup("styleselect").addButtonGroup("table"); -->
+    <!-- } -->
+  <!-- }); -->
+
+  oPage.addContent(oRR);
+  //oPage.addContent(oRR.clone());
+
+function fn_attach(){
+
+
+
+  
+ <!-- function lf_aaa(){ -->
+     <!-- debugger; -->
+     <!-- if(typeof oRich === "undefined"){ -->
+        <!-- return; -->
+     <!-- } -->
+     
+     <!-- if(typeof oRich._iframeId === "undefined"){ -->
+        <!-- return; -->
+     <!-- } -->
+     
+      <!-- var sframeId = oRich._iframeId; -->
+      
+      <!-- var oF = document.getElementById(sframeId); -->
+      
+      <!-- if(oF){ -->
+        <!-- $(oF).remove(); -->
+        <!-- lf_aaa(); -->
+      <!-- } -->
+  
+  <!-- } -->
+  
+  <!-- lf_aaa(); -->
+  
+  // usage 클리어
+  fn_del();
+  
+  
+  debugger;
+
+  //setTimeout(function(){
+
+    //jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+
+  <!-- oRich = new sap.ui.richtexteditor.RichTextEditor({ -->
+    oRich = new u4a.m.RichEditorTinyMCE({    
+      width: "100%",
+      customToolbar: true,
+      showGroupFont: true,
+      showGroupInsert: true,
+      showGroupLink: true,
+      showGroupUndo: true,
+      useLegacyTheme: false,
+      ready: function () {
+        this.addButtonGroup("styleselect").addButtonGroup("table");
+      }
+    });
+
+    oUsage = new u4a.m.UsageArea({
+      contents : [
+        new sap.m.Page({
+          content : [
+            oRich,
+          ]
+        })
+      ]
+    });
+
+    oPage.addContent(oUsage);
+
+
+  //}, 500);
+
+} // end of fn_attach
+
+function fn_del(){
+
+  //setTimeout(function(){
+
+    if(oUsage){
+
+      oPage.removeContent(oUsage);
+
+      oUsage.destroyContents();
+      oUsage.destroy();
+      oUsage = null;
+    }
+
+  //},0);
+
+}
+
+var a = [],
+    b = [],
+    c = [],
+    d = [],
+    e = [],
+    f = [],
+    g = [];
+
+function fn_time(){
+
+  var v;
+
+  oInput.setValue("");
+
+  setTimeout(function(){
+
+
+    for(var i = 0; i < 1000000; i++){
+      a.push(new sap.m.Button());
+    }
+
+    for(var i = 0; i < 1000000; i++){
+      b.push(new sap.m.Button());
+    }
+    /*
+    for(var i = 0; i < 1000000; i++){
+      c.push(new sap.m.Button());
+    }
+
+    for(var i = 0; i < 1000000; i++){
+      d.push(new sap.m.Button());
+    }
+
+    for(var i = 0; i < 1000000; i++){
+      e.push(new sap.m.Button());
+    }
+
+    for(var i = 0; i < 1000000; i++){
+      f.push(new sap.m.Button());
+    }
+
+    for(var i = 0; i < 1000000; i++){
+      g.push(new sap.m.Button());
+    }
+    */
+    if(v){
+      return;
+    }
+
+    v = "1";
+
+    //sap.m.MessageToast.show();
+
+  },0);
+
+  setTimeout(function(){
+
+    if(v){
+      return;
+    }
+
+    v = "2";
+
+  },0);
+
+  setTimeout(function(){
+
+    if(v){
+      return;
+    }
+
+    v = "3";
+
+  },0);
+
+  setTimeout(function(){
+
+    if(v){
+      return;
+    }
+
+    v = "4";
+
+  },0);
+
+  setTimeout(function(){
+
+    oInput.setValue(v);
+
+  },1000);
+
+}
+
+
+</script>
+
+</body>
+</html>

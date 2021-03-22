@@ -13,7 +13,7 @@ data-sap-ui-language="EN"
 data-sap-ui-noDuplicateIds="false"
 data-sap-ui-preload="sync"
 data-sap-ui-compatVersion="edge"
-data-sap-ui-theme="sap_fiori_3"
+data-sap-ui-theme="sap_belize_plus"
 data-sap-ui-libs="sap.m"
 data-sap-ui-noDuplicateIds="true">
 </script>
@@ -34,15 +34,15 @@ margin: 0px;
 
 </head>
 <body>
+
 <div id="content"></div>
 
 <script>
 
 var u4a = {};
     u4a.m = {};
-
+	
 //Copyright 2017. INFOCG Inc. all rights reserved.
-
 sap.ui.define("u4a.m.UsageArea", [
 "sap/ui/core/Control",
 
@@ -94,100 +94,81 @@ sap.ui.define("u4a.m.UsageArea", [
 
 });
 
-jQuery.u4aJSloadAsync = function(url, callback) {
-    jQuery.ajax({
-      'url': url,
-      'dataType': 'script',
-      'cache': false,
-      'async': false,
-      'success': callback || jQuery.noop
-    });
-}
 
 
-var oUsage,
-	oApp = new sap.m.App(),
-    oPage = new sap.m.Page();
 
-    oApp.addPage(oPage);
-    oApp.placeAt("content");
+debugger;
 
-var oBtn1 = new sap.m.Button({ 
-		text: "붙이기",
-		press: fn_attach
+
+	
+var oApp = new sap.m.App(),
+	oPage = new sap.m.Page(),
+	oBtn1 = new sap.m.Button({
+		text : "붙이기",
+		press : fn_usage.bind(this,"A")
 	}),
 	oBtn2 = new sap.m.Button({
-		text: "제거",
-		press: fn_del
+		text : "삭제",
+		press : fn_usage.bind(this,"B")
 	});
+	
+	<!-- oRich = new sap.ui.richtexteditor.RichTextEditor({ -->
+		<!-- height: "100px", -->
+		<!-- width: "100%" -->
+	<!-- }); -->
+	
+	oApp.addPage(oPage);
+	oApp.placeAt("content");
 	
 	oPage.addContent(oBtn1);
 	oPage.addContent(oBtn2);
-	
-	setTimeout(function(){
-	
-		jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
-		
-		var oRR = new sap.ui.richtexteditor.RichTextEditor({
-			customToolbar: true,
-			showGroupFont: true,
-			showGroupInsert: true,
-			showGroupLink: true,
-			showGroupUndo: true,
-			width: "100%"
-		});
-		
-		oPage.addContent(oRR);
+	//oPage.addContent(oRich);
+	//oPage.addContent(oUsage);
 
-	},0);
 
-function fn_attach(){
+
+function fn_usage(sFlag){
+    
+	debugger;
 	
-	if(oUsage){
-		oPage.removeContent(oUsage);
-		oUsage = null;
+	switch(sFlag){
+	
+		case "A": 
+			fn_add(oPage);
+			break;
+		case "B":
+			fn_del(oPage);		
+			break;
+		
 	}
 	
-	setTimeout(function(){
-	
-	jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
-	
-	var oRich = new sap.ui.richtexteditor.RichTextEditor({
-		customToolbar: true,
-		showGroupFont: true,
-		showGroupInsert: true,
-		showGroupLink: true,
-		showGroupUndo: true,
-		useLegacyTheme: false,
-		ready: function () {
-			//this.addButtonGroup("styleselect").addButtonGroup("table");
-		}		
-	});
-		
-	oUsage = new u4a.m.UsageArea({
-		content : [
-			new sap.m.Page({
-				content : [
-					oRich
-				]				
-			})
-		]
-	});
-	
-	oUsage.addContent(new sap.m.Page({
-		content : [
-			oRich
-		]
-		
-	}));
-	
-	oPage.addContent(oUsage);
-	
-	}, 0);
+}
+
+function fn_add(pp){
+setTimeout(function(){
+
+oUsage = new u4a.m.UsageArea();
+
+pp.addContent(oUsage);
+
+var oPage = new sap.m.Page();
+
+
+jQuery.sap.require("sap.ui.richtexteditor.RichTextEditor");
+
+var oRich1 = new sap.ui.richtexteditor.RichTextEditor();
+
+oPage.addContent(oRich1);
+
+oUsage.addContent(oPage);
+
+},500);
+
 }
 
 function fn_del(){
-debugger;
+
+oUsage.removeAllContents();
 
 }
 
