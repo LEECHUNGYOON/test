@@ -12,7 +12,8 @@
 
 <!-- <script id="sap-ui-bootstrap" src="/ui5/v1772/resources/sap-ui-core.js" -->
 <!-- <script id="sap-ui-bootstrap" src="/ui5/v1870/resources/sap-ui-core.js" -->
-<script id="sap-ui-bootstrap" src="/openui5/v1772/resources/sap-ui-core.js"
+<!-- <script id="sap-ui-bootstrap" src="/openui5/v1772/resources/sap-ui-core.js" -->
+<script id="sap-ui-bootstrap" src="/sapui5/v1772/resources/sap-ui-core.js"
 data-sap-ui-language="EN"
 data-sap-ui-noDuplicateIds="false"
 data-sap-ui-preload="sync"
@@ -109,200 +110,52 @@ sap.ui.define("u4a.m.RichEditorTinyMCE", [
       library : "u4a.m",
     },
 
-    init : function(){
-
-      this._isFalse = "";
-
-      debugger;
-	  
-      var sIframeId = this._iframeId,
-      oIframe = document.getElementById(sIframeId);
-
-      if(oIframe){        
-          return;
-      }
-      
-      RichTextEditor.prototype.init.apply(this, arguments);
-
+    init : function(){ 
+		RichTextEditor.prototype.init.apply(this, arguments);	  
     },
 
     onBeforeRendering : function(){
-
-      debugger;
-
-      var sIframeId = this._iframeId,
-      oIframe = document.getElementById(sIframeId);
-
-      if(oIframe){        
-          return;
-      }
        
-      //this.getAggregation("_toolbarWrapper");
-
-      RichTextEditor.prototype.onBeforeRendering.apply(this, arguments);
-
+	   RichTextEditor.prototype.onBeforeRendering.apply(this, arguments);
+	   
+	    var oIframe = document.getElementById(this._iframeId),
+			oToolbar = this.getAggregation("_toolbarWrapper");
+			
+		if(!oToolbar){
+			return;
+		}	
+		
+		if(!oIframe){
+			
+			debugger;
+			
+			var sToolbarId = this.getId() + oToolbar.getId(),
+				oToolDom = document.getElementById(sToolbarId);
+			
+			if(!oToolDom){
+				return;
+			}
+			
+			$(oToolDom).remove();
+			$(this._textAreaDom).remove();
+			
+			this.setAggregation("_toolbarWrapper", null, true);	
+			
+			RichTextEditor.prototype.onBeforeRendering.apply(this, arguments);
+			//this.rerender();			
+			
+		}
+	   
     },
 
-    renderer : function(oRm, oControl){
-      var sIframeId = this._iframeId,
-      oIframe = document.getElementById(sIframeId);
-
-      if(oIframe){        
-          return;
-      }
-      
-      <!-- var sIframeId = oControl._iframeId, -->
-      <!-- oIframe = document.getElementById(sIframeId); -->
-
-      <!-- if(oIframe){ -->
-        <!-- debugger; -->
-        <!-- $('#' + oControl.getId()).remove(); -->
-      <!-- } -->
-
-      RichTextEditorRenderer.render(oRm, oControl);
+    renderer : function(oRm, oControl){    
+		RichTextEditorRenderer.render(oRm, oControl);
     },
 
-    onAfterRendering : function(){
-      
-      var sIframeId = this._iframeId,
-          oIframe = document.getElementById(sIframeId);
-
-      if(oIframe){        
-          return;
-      }
-      
-      var that = this;
-
-      RichTextEditor.prototype.onAfterRendering.apply(that, arguments);
-
-
-      <!-- var sIframeId = this._iframeId,  -->
-      <!-- oIframe = document.getElementById(sIframeId); -->
-
-
-      <!-- if(this._isFalse == ""){ -->
-        <!-- RichTextEditor.prototype.onAfterRendering.apply(this, arguments); -->
-        <!-- this._isFalse = 'X'; -->
-        <!-- return; -->
-      <!-- } -->
-      <!-- else { -->
-        <!-- if(!oIframe){ -->
-          <!-- debugger; -->
-          <!-- RichTextEditor.prototype.onAfterRendering.apply(this, arguments); -->
-          <!-- //this.onAfterRendering(); -->
-          <!-- //return;         -->
-          <!-- //$('#' + this.getId()).remove(); -->
-        <!-- } -->
-      <!-- } -->
-
-
-
+    onAfterRendering : function(){   
+		RichTextEditor.prototype.onAfterRendering.apply(this, arguments);
     },
-
-    <!-- onAfterRenderingTinyMCE4 : function(){ -->
-
-      <!-- debugger; -->
-
-      <!-- RichTextEditor.prototype.onAfterRenderingTinyMCE4.apply(this, arguments); -->
-
-    <!-- }, -->
-
-    <!-- _initializeTinyMCE4  : function(){ -->
-
-      <!-- debugger; -->
-
-      <!-- RichTextEditor.prototype._initializeTinyMCE4.apply(this, arguments); -->
-
-      <!-- debugger; -->
-
-    <!-- }, -->
-
-    <!-- onAfterRenderingTinyMCE : function(){ -->
-      <!-- debugger; -->
-
-      <!-- RichTextEditor.prototype.onAfterRenderingTinyMCE.apply(this, arguments); -->
-
-      <!-- var sIframeId = this._iframeId, -->
-        <!-- oIframe = document.getElementById(sIframeId); -->
-
-    <!-- }, -->
-
-    _onAfterReadyTinyMCE : function(){
-      //debugger;
-
-      RichTextEditor.prototype._onAfterReadyTinyMCE.apply(this, arguments);
-
-
-      return;
-
-
-
-
-      var sIframeId = this._iframeId,
-        oIframe = document.getElementById(sIframeId);
-
-      var $aEditors = $(".sapUiRTE"),
-        $iEditorLenth = $aEditors.length;
-
-      if(!$iEditorLenth){
-        return;
-      }
-
-      for(var i = 0; i < $iEditorLenth; i++){
-
-        var oEditor = $aEditors[i],
-          sEditorDomId = oEditor.id,
-          oRichEditor = sap.ui.getCore().byId(sEditorDomId);
-
-        if(!oRichEditor){
-          continue;
-        }
-
-        var sRichIframeId = oRichEditor._iframeId,
-          oIframe = document.getElementById(sRichIframeId);
-
-        if(oIframe){
-          continue;
-        }
-
-        debugger;
-
-        oRichEditor._oEditor.remove();
-
-        oRichEditor._initializeTinyMCE();
-
-        <!-- oRichEditor.reinitialize(); -->
-
-        //oRichEditor._initializeTinyMCE();
-
-        <!-- oRichEditor._bInitializationPending = false; -->
-        <!-- oRichEditor._tinyMCEStatus = "Ready"; -->
-        <!-- oRichEditor.reinitializeTinyMCE();  -->
-
-      }
-
-
-
-
-      <!-- if(!oIframe){ -->
-        <!-- debugger; -->
-        <!-- this.onAfterRenderingTinyMCE(); -->
-        <!-- return; -->
-      <!-- }       -->
-
-    },
-
-    reinitializeTinyMCE : function(){
-
-      //this._bInitializationPending = false;
-
-      //debugger;
-
-      RichTextEditor.prototype.reinitializeTinyMCE.apply(this, arguments);
-
-
-    }
-
+	
   });
 
   return oEditor;
@@ -404,7 +257,7 @@ function fn_attach(){
   fn_del();
   
   
-  debugger;
+  //debugger;
 
   //setTimeout(function(){
 
@@ -457,100 +310,6 @@ function fn_del(){
   //},0);
 
 }
-
-var a = [],
-    b = [],
-    c = [],
-    d = [],
-    e = [],
-    f = [],
-    g = [];
-
-function fn_time(){
-
-  var v;
-
-  oInput.setValue("");
-
-  setTimeout(function(){
-
-
-    for(var i = 0; i < 1000000; i++){
-      a.push(new sap.m.Button());
-    }
-
-    for(var i = 0; i < 1000000; i++){
-      b.push(new sap.m.Button());
-    }
-    /*
-    for(var i = 0; i < 1000000; i++){
-      c.push(new sap.m.Button());
-    }
-
-    for(var i = 0; i < 1000000; i++){
-      d.push(new sap.m.Button());
-    }
-
-    for(var i = 0; i < 1000000; i++){
-      e.push(new sap.m.Button());
-    }
-
-    for(var i = 0; i < 1000000; i++){
-      f.push(new sap.m.Button());
-    }
-
-    for(var i = 0; i < 1000000; i++){
-      g.push(new sap.m.Button());
-    }
-    */
-    if(v){
-      return;
-    }
-
-    v = "1";
-
-    //sap.m.MessageToast.show();
-
-  },0);
-
-  setTimeout(function(){
-
-    if(v){
-      return;
-    }
-
-    v = "2";
-
-  },0);
-
-  setTimeout(function(){
-
-    if(v){
-      return;
-    }
-
-    v = "3";
-
-  },0);
-
-  setTimeout(function(){
-
-    if(v){
-      return;
-    }
-
-    v = "4";
-
-  },0);
-
-  setTimeout(function(){
-
-    oInput.setValue(v);
-
-  },1000);
-
-}
-
 
 </script>
 
